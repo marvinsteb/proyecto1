@@ -160,7 +160,7 @@ public class Cuotas extends javax.swing.JFrame {
     private double  Monto;
     private double  tasa;
     private int     anios;
-    private double  pCapital;
+    private double  calculoCuota;
     private  String[][] resultado;
     
     private void obtenerDatos(){
@@ -182,33 +182,54 @@ public class Cuotas extends javax.swing.JFrame {
         nuevoCalculoFances.setMontoPrestamo(this.Monto);
         nuevoCalculoFances.setNumeroAnios(this.anios);
         nuevoCalculoFances.setTasaInteres(this.tasa);
-        double calculoCuotas = nuevoCalculoFances.calculoCuotas(this.anios);
         
+        nuevoCalculoFances.setSaldoCuenta(nuevoCalculoFances.getMontoPrestamo());    
+        
+        calculoCuota= nuevoCalculoFances.calculoCuotas(this.anios);
         resultado=new String[nuevoCalculoFances.getNumeroCuotas()][5];
-        
-        pCapital= nuevoCalculoFances.calculoCuotas(this.anios);
-        nuevoCalculoFances.setSaldoCuenta(nuevoCalculoFances.getMontoPrestamo());
-        double pagoIneres;
+        double pagoInteres;
         double pagoCapital;
  
         /*llena la columna de pago a capital*/
         for(int i=0;i<nuevoCalculoFances.getNumeroCuotas();i++){
-            System.out.println( nuevoCalculoFances.getSaldoCuenta());
-            pagoIneres = nuevoCalculoFances.getSaldoCuenta() * nuevoCalculoFances.getInteresMensual();
+            pagoInteres = nuevoCalculoFances.PagoInteres();
+            pagoCapital = nuevoCalculoFances.calculoPagoCapital();
             
-            pagoCapital = pCapital - pagoIneres;
-           
             resultado[i][0]=String.valueOf(i+1);
-            //saldo deuda
             resultado[i][1]=String.valueOf(nuevoCalculoFances.getSaldoCuenta());
-            // pago intereses
-            resultado[i][2]=String.valueOf(pagoIneres);
-            // pago capital 
+            resultado[i][2]=String.valueOf(pagoInteres);
             resultado[i][3]=String.valueOf(pagoCapital);
-            // cuota     
-            resultado[i][4]=String.valueOf(pCapital);
+            resultado[i][4]=String.valueOf(calculoCuota);
 
             nuevoCalculoFances.setSaldoCuenta(nuevoCalculoFances.getSaldoCuenta() - pagoCapital);
+        }
+         llenarTabla();
+    }
+    private void calcularAmericano(){
+        obtenerDatos();
+        MetodoAmericano nuevoCalculo = new MetodoAmericano();
+        nuevoCalculo.setMontoPrestamo(this.Monto);
+        nuevoCalculo.setNumeroAnios(this.anios);
+        nuevoCalculo.setTasaInteres(this.tasa);
+        
+        resultado=new String[nuevoCalculo.getNumeroCuotas()][5]; 
+        double pagoCapital;
+        double interes;
+        for(int i=0;i<nuevoCalculo.getNumeroCuotas();i++){
+            resultado[i][0]=String.valueOf(i+1);
+            resultado[i][1] = String.valueOf(nuevoCalculo.getMontoPrestamo());
+            interes = nuevoCalculo.PagoInteres();
+            resultado[i][2]=String.valueOf(interes);
+            if(i+1 == nuevoCalculo.getNumeroCuotas()){
+                 pagoCapital = nuevoCalculo.getMontoPrestamo();
+                 resultado[i][3]=String.valueOf(pagoCapital);
+                   
+            }else{
+                  pagoCapital = 0.00;
+                  resultado[i][3]=String.valueOf(pagoCapital);
+            }
+            resultado[i][4]=String.valueOf(pagoCapital + interes);
+           
         }
          llenarTabla();
     }
@@ -229,23 +250,23 @@ public class Cuotas extends javax.swing.JFrame {
         calculo.setNumeroAnios(anios);
 
         resultado=new String[anios][5];
-        pCapital=calculo.calculoCuotas(calculo.numeroAnios);
+        calculoCuota=calculo.calculoCuotas(calculo.numeroAnios);
         for(int i=0;i<anios;i++){
             resultado[i][0]=String.valueOf(i+1);
-            resultado[i][3]=String.valueOf(pCapital);
+            resultado[i][3]=String.valueOf(calculoCuota);
         }
 
         for(int i=0; i<anios ;i++){
             resultado[i][1]=String.valueOf(calculo.montoPrestamo);
             resultado[i][2]=String.valueOf(calculo.PagoInteres());
-            resultado[i][4]=String.valueOf(calculo.PagoInteres()+pCapital);
-            calculo.montoPrestamo=calculo.montoPrestamo-pCapital;
+            resultado[i][4]=String.valueOf(calculo.PagoInteres()+calculoCuota);
+            calculo.montoPrestamo=calculo.montoPrestamo-calculoCuota;
         }
         llenarTabla();
     }//GEN-LAST:event_btnAlemanActionPerformed
 
     private void AmericanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmericanoActionPerformed
-        // TODO add your handling code here:
+        calcularAmericano();
     }//GEN-LAST:event_AmericanoActionPerformed
 
     /**

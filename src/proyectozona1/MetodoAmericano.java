@@ -9,6 +9,16 @@ package proyectozona1;
  *
  * @author mmenchu
  */
-public class MetodoAmericano {
+public class MetodoAmericano extends Amortizacion implements Operacion{
+
+    @Override
+    protected double PagoInteres() {
+        return this.montoPrestamo * super.getInteresMensual();
+    }
+
+    @Override
+    public double calculoCuotas(int anios) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

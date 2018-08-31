@@ -22,10 +22,8 @@ public class MetodoFrances extends Amortizacion implements Operacion {
     
     @Override
     protected double PagoInteres() {
-        
-        return   this.saldoCuenta * this.getInteresMensual();
+        return  this.getSaldoCuenta() * super.getInteresMensual();
     }
-
     @Override
     public double calculoCuotas(int anios) {
         super.setNumeroAnios(anios);
@@ -35,7 +33,7 @@ public class MetodoFrances extends Amortizacion implements Operacion {
         return c;
     }
     public double calculoPagoCapital(){
-        return 0.00;
+        return this.calculoCuotas(super.getNumeroAnios()) - this.PagoInteres() ;
     }
     public double calculoPagoCuota(){
         return 0.00;
