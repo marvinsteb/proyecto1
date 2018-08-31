@@ -5,13 +5,13 @@ public class MetodoAleman extends Amortizacion implements Operacion{
     @Override
     public double calculoCuotas(int anios){
         double resultado;
-        resultado=(montoPrestamo/numeroAnios);
+        resultado=(this.montoPrestamo/this.numeroAnios);
         return resultado;
     }
     
     @Override
     protected double PagoInteres(){
-        double resultado=0;
+        double resultado = 0;
         double tasa;
         tasa=(tasaInteres/12)/100;
         resultado=(montoPrestamo)*tasa;

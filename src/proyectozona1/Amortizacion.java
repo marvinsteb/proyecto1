@@ -9,9 +9,18 @@ package proyectozona1;
  *
  */
 public abstract class Amortizacion {
-    protected double montoPrestamo;
-    protected double tasaInteres;
-    protected int numeroAnios;
+    protected double    montoPrestamo;
+    protected int       numeroAnios;
+    protected double    tasaInteres;
+
+    public int getNumeroCuotas() {
+        return numeroAnios * 12;
+    }
+
+    public double getInteresMensual(){
+        return (tasaInteres / 12) / 100;
+    }
+    
     public double getMontoPrestamo() {
         return montoPrestamo;
     }
@@ -21,7 +30,7 @@ public abstract class Amortizacion {
     }
 
     public double getTasaInteres() {
-        return tasaInteres;
+        return tasaInteres / 100;
     }
 
     public void setTasaInteres(double tasaInteres) {

@@ -34,8 +34,8 @@ public class Cuotas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        Aleman = new javax.swing.JButton();
-        Frances = new javax.swing.JButton();
+        btnAleman = new javax.swing.JButton();
+        javax.swing.JButton btnFrances = new javax.swing.JButton();
         Americano = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
@@ -61,19 +61,19 @@ public class Cuotas extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("INTERES ANUAL");
 
-        Aleman.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        Aleman.setText("Método Almericano");
-        Aleman.addActionListener(new java.awt.event.ActionListener() {
+        btnAleman.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        btnAleman.setText("Método Alemán");
+        btnAleman.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AlemanActionPerformed(evt);
+                btnAlemanActionPerformed(evt);
             }
         });
 
-        Frances.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        Frances.setText("Método Francés");
-        Frances.addActionListener(new java.awt.event.ActionListener() {
+        btnFrances.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        btnFrances.setText("Método Francés");
+        btnFrances.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FrancesActionPerformed(evt);
+                btnFrancesActionPerformed(evt);
             }
         });
 
@@ -93,7 +93,7 @@ public class Cuotas extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "No de Cuota", "Saldo Deuda", "Pago Intereses", "Pago Capital", "Capital"
+                "No de Cuota", "Saldo Deuda", "Pago Intereses", "Pago Capital", "Cuota"
             }
         ));
         jScrollPane1.setViewportView(Tabla);
@@ -114,9 +114,9 @@ public class Cuotas extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(interes, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(84, 84, 84)
-                        .addComponent(Aleman)
+                        .addComponent(btnAleman)
                         .addGap(18, 18, 18)
-                        .addComponent(Frances)
+                        .addComponent(btnFrances)
                         .addGap(33, 33, 33)
                         .addComponent(Americano))
                     .addGroup(layout.createSequentialGroup()
@@ -129,7 +129,7 @@ public class Cuotas extends javax.swing.JFrame {
                             .addComponent(monto, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(189, 189, 189)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(23, 23, 23))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,60 +147,106 @@ public class Cuotas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(interes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Aleman)
-                    .addComponent(Frances)
+                    .addComponent(btnAleman)
+                    .addComponent(btnFrances)
                     .addComponent(Americano))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void AlemanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlemanActionPerformed
-    double Monto=Double.parseDouble(monto.getText());
-    double tasa=Double.parseDouble(interes.getText());
-    int anios=Integer.parseInt(tiempo.getText());
-    double pCapital;
-    anios=anios*12;
-    String[][] resultado;
-    MetodoAleman calculo=new MetodoAleman();
-    calculo.setMontoPrestamo(Monto);
-    calculo.setTasaInteres(tasa);
-    calculo.setNumeroAnios(anios);
-    resultado=new String[anios][5];
-    pCapital=calculo.calculoCuotas(calculo.numeroAnios);
-    for(int i=0;i<anios;i++){
-        resultado[i][0]=String.valueOf(i+1);
-        resultado[i][3]=String.valueOf(pCapital);
-        
+    private double  Monto;
+    private double  tasa;
+    private int     anios;
+    private double  pCapital;
+    private  String[][] resultado;
+    
+    private void obtenerDatos(){
+          this.Monto   = Double.parseDouble(monto.getText());
+          this.tasa    = Double.parseDouble(interes.getText());
+          this.anios   = Integer.parseInt(tiempo.getText());
     }
-    for(int i=0;i<anios;i++){
-        resultado[i][1]=String.valueOf(calculo.montoPrestamo);
-        resultado[i][2]=String.valueOf(calculo.PagoInteres());
-        resultado[i][4]=String.valueOf(calculo.PagoInteres()+pCapital);
-        calculo.montoPrestamo=calculo.montoPrestamo-pCapital;
-    }
-        Tabla.setModel(new javax.swing.table.DefaultTableModel(
-           resultado,
+    private void llenarTabla(){
+            Tabla.setModel(new javax.swing.table.DefaultTableModel(
+            resultado,
             new String [] {
-                "No de Cuota", "Saldo Deuda", "Pago Intereses", "Pago Capital", "Capital"
+                "No de Cuota", "Saldo Deuda", "Pago Intereses", "Pago Capital", "Cuota"
             }
         ));
-    }//GEN-LAST:event_AlemanActionPerformed
+    }
+    private void cacularMetodoFances(){
+        obtenerDatos();
+        MetodoFrances nuevoCalculoFances = new MetodoFrances();
+        nuevoCalculoFances.setMontoPrestamo(this.Monto);
+        nuevoCalculoFances.setNumeroAnios(this.anios);
+        nuevoCalculoFances.setTasaInteres(this.tasa);
+        double calculoCuotas = nuevoCalculoFances.calculoCuotas(this.anios);
+        
+        resultado=new String[nuevoCalculoFances.getNumeroCuotas()][5];
+        
+        pCapital= nuevoCalculoFances.calculoCuotas(this.anios);
+        nuevoCalculoFances.setSaldoCuenta(nuevoCalculoFances.getMontoPrestamo());
+        double pagoIneres;
+        double pagoCapital;
+ 
+        /*llena la columna de pago a capital*/
+        for(int i=0;i<nuevoCalculoFances.getNumeroCuotas();i++){
+            System.out.println( nuevoCalculoFances.getSaldoCuenta());
+            pagoIneres = nuevoCalculoFances.getSaldoCuenta() * nuevoCalculoFances.getInteresMensual();
+            
+            pagoCapital = pCapital - pagoIneres;
+           
+            resultado[i][0]=String.valueOf(i+1);
+            //saldo deuda
+            resultado[i][1]=String.valueOf(nuevoCalculoFances.getSaldoCuenta());
+            // pago intereses
+            resultado[i][2]=String.valueOf(pagoIneres);
+            // pago capital 
+            resultado[i][3]=String.valueOf(pagoCapital);
+            // cuota     
+            resultado[i][4]=String.valueOf(pCapital);
 
-    private void FrancesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FrancesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FrancesActionPerformed
-
-    private void AmericanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmericanoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AmericanoActionPerformed
+            nuevoCalculoFances.setSaldoCuenta(nuevoCalculoFances.getSaldoCuenta() - pagoCapital);
+        }
+         llenarTabla();
+    }
+    private void btnFrancesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFrancesActionPerformed
+        cacularMetodoFances();
+    }//GEN-LAST:event_btnFrancesActionPerformed
 
     private void tiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiempoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tiempoActionPerformed
+
+    private void btnAlemanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlemanActionPerformed
+        obtenerDatos();
+        anios=anios*12;
+        MetodoAleman calculo=new MetodoAleman();
+        calculo.setMontoPrestamo(Monto);
+        calculo.setTasaInteres(tasa);
+        calculo.setNumeroAnios(anios);
+
+        resultado=new String[anios][5];
+        pCapital=calculo.calculoCuotas(calculo.numeroAnios);
+        for(int i=0;i<anios;i++){
+            resultado[i][0]=String.valueOf(i+1);
+            resultado[i][3]=String.valueOf(pCapital);
+        }
+
+        for(int i=0; i<anios ;i++){
+            resultado[i][1]=String.valueOf(calculo.montoPrestamo);
+            resultado[i][2]=String.valueOf(calculo.PagoInteres());
+            resultado[i][4]=String.valueOf(calculo.PagoInteres()+pCapital);
+            calculo.montoPrestamo=calculo.montoPrestamo-pCapital;
+        }
+        llenarTabla();
+    }//GEN-LAST:event_btnAlemanActionPerformed
+
+    private void AmericanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmericanoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AmericanoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,10 +283,9 @@ public class Cuotas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Aleman;
     private javax.swing.JButton Americano;
-    private javax.swing.JButton Frances;
     private javax.swing.JTable Tabla;
+    private javax.swing.JButton btnAleman;
     private javax.swing.JTextField interes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
