@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectozona1;
+package Labo1;
 
 /**
  *
- * @author mmenchu
+ * @author Steve S
  */
-public class MetodoFrances extends Amortizacion implements Operacion {
+public class CalcFrances extends Amortizacion implements Operacion {
     private double saldoCuenta = 0.00;   
 
     public double getSaldoCuenta(){

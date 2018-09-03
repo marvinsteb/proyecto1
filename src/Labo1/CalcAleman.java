@@ -1,7 +1,7 @@
 
-package proyectozona1;
+package Labo1;
 
-public class MetodoAleman extends Amortizacion implements Operacion{
+public class CalcAleman extends Amortizacion implements Operacion{
     @Override
     public double calculoCuotas(int anios){
         double resultado;

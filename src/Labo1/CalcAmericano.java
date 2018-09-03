@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectozona1;
+package Labo1;
 
 /**
  *
- * @author mmenchu
+ * @author Steve S
  */
-public class MetodoAmericano extends Amortizacion implements Operacion{
+public class CalcAmericano extends Amortizacion implements Operacion{
 
     @Override
     protected double PagoInteres() {
